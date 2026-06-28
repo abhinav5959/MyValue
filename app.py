@@ -1,6 +1,20 @@
-from flask import Flask, render_template, abort
+import os
+from flask import Flask, render_template, abort, request, jsonify
+from supabase import create_client, Client
+from dotenv import load_dotenv
+
+load_dotenv()
 
 app = Flask(__name__)
+
+# Initialize Supabase client
+SUPABASE_URL = os.environ.get("SUPABASE_URL")
+SUPABASE_KEY = os.environ.get("SUPABASE_KEY")
+
+if SUPABASE_URL and SUPABASE_KEY:
+    supabase: Client = create_client(SUPABASE_URL, SUPABASE_KEY)
+else:
+    supabase = None
 
 @app.route('/')
 def index():
@@ -29,6 +43,26 @@ def car_predict_placeholder():
     re-map this link directly to 'car_entry.html' once they start coding.
     """
     return "<h3>Automotive Form Vector Standby</h3><p>The frontend interface is operational. Ready for your friends to inject the 10 mechanical indicator fields.</p><br><a href='/'>&larr; Return to Main App</a>"
+
+@app.route('/api/contact', methods=['POST'])
+def contact():
+    data = request.json
+    if not data or not data.get('name') or not data.get('email') or not data.get('message'):
+        return jsonify({"error": "Missing required fields"}), 400
+    
+    if not supabase:
+        return jsonify({"error": "Supabase not configured on the server"}), 500
+
+    try:
+        response = supabase.table('messages').insert({
+            "name": data.get('name'),
+            "email": data.get('email'),
+            "message": data.get('message')
+        }).execute()
+        
+        return jsonify({"success": True, "data": response.data}), 200
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
 
 if __name__ == '__main__':
     # Set debug=True so that anytime you make a adjustment to your CSS or layout,

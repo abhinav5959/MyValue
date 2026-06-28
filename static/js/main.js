@@ -79,30 +79,30 @@ document.addEventListener("DOMContentLoaded", () => {
             submitButton.disabled = true;
             submitButton.innerHTML = "Routing Payload...";
             
-            /**
-             * NOTE: Your Supabase client instantiation and direct REST fetch link 
-             * will be wired directly right here during the cloud hosting phase.
-             * * Example Blueprint:
-             * const response = await fetch('YOUR_SUPABASE_URL/rest/v1/messages', {
-             * method: 'POST',
-             * headers: {
-             * 'apikey': 'YOUR_SUPABASE_ANON_KEY',
-             * 'Authorization': 'Bearer YOUR_SUPABASE_ANON_KEY',
-             * 'Content-Type': 'application/json'
-             * },
-             * body: JSON.stringify({ name, email, message })
-             * });
-             */
-            
-            setTimeout(() => {
-                // Return successful validation status to user experience layer without page wipe
-                alert(`System Notification:\nMessage logged from ${name}. Connection string validated!`);
-                
-                // Clear fields and restore button state
-                contactForm.reset();
+            try {
+                const response = await fetch('/api/contact', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ name, email, message })
+                });
+
+                const result = await response.json();
+
+                if (response.ok) {
+                    alert(`System Notification:\nMessage logged from ${name}. Connection successful!`);
+                    contactForm.reset();
+                } else {
+                    alert(`System Error:\nFailed to send message: ${result.error || 'Unknown error'}`);
+                }
+            } catch (error) {
+                alert(`System Error:\nAn unexpected error occurred while communicating with the server.`);
+                console.error(error);
+            } finally {
                 submitButton.disabled = false;
                 submitButton.innerHTML = originalButtonText;
-            }, 800);
+            }
         });
     }
 });
