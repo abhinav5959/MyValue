@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MyValue | Dual-Vector Asset Appraisal Platform</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body class="active-section-1">
+
+    <div class="solar-background-canvas">
+        <div class="solar-core-orb"></div>
+    </div>
+
+    <nav class="global-navbar-pod">
+        <div class="nav-brand-container">
+            <div class="brand-geometric-logo"></div>
+            <span class="brand-text">MyValue</span>
+        </div>
+        <div class="nav-links-cluster">
+            <a href="#home" class="nav-link-item active" data-target="1">Home</a>
+            <a href="#how-it-works" class="nav-link-item" data-target="2">How It Works</a>
+            <a href="#about" class="nav-link-item" data-target="3">About</a>
+            <a href="#contact" class="nav-link-item" data-target="4">Contact</a>
+        </div>
+        <div class="nav-system-status">
+            <span class="status-dot green-pulse"></span>
+            <span class="status-label">Server Active</span>
+            <span class="status-dot orange-pulse"></span>
+            <span class="status-label">Model Standby</span>
+        </div>
+    </nav>
+
+    <main class="master-scroll-container">
+
+        <section id="home" class="viewport-snap-block" data-section="1">
+            <div class="liquid-glass-wrapper">
+                <div class="split-entry-matrix">
+                    
+                    <div class="appraisal-choice-card">
+                        <div class="card-icon">🏠</div>
+                        <h2>House Price Prediction</h2>
+                        <p>Estimate residential real estate market values based on spatial, dimensional, and regional data features[cite: 48].</p>
+                        <a href="/predict/house" class="solar-corona-btn btn-housing">Predict House Price &rarr;</a>
+                    </div>
+
+                    <div class="appraisal-choice-card">
+                        <div class="card-icon">🚗</div>
+                        <h2>Car Price Prediction</h2>
+                        <p>Estimate pre-owned vehicle valuations based on age, mechanical metrics, and wear indicators[cite: 53].</p>
+                        <a href="/predict/car" class="solar-corona-btn btn-automotive">Predict Car Price &rarr;</a>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <section id="how-it-works" class="viewport-snap-block" data-section="2">
+            <div class="liquid-glass-wrapper">
+                <div class="section-headline-area">
+                    <h2>Engine Architecture & Pipeline</h2>
+                </div>
+                <div class="three-stage-pipeline">
+                    
+                    <div class="pipeline-node-card">
+                        <div class="node-badge">Stage 1</div>
+                        <h3>🛰️ Feature Hygiene</h3>
+                        <p class="ghost-text">Strips target noise columns (ID, Date, Postal Code) and processes core structural metrics[cite: 21].</p>
+                    </div>
+
+                    <div class="pipeline-node-card">
+                        <div class="node-badge">Stage 2</div>
+                        <h3>🧠 Tuned Ensemble Core</h3>
+                        <p class="ghost-text">Aggregates an optimized cluster of 100+ separate Random Forest decision trees.</p>
+                    </div>
+
+                    <div class="pipeline-node-card">
+                        <div class="node-badge">Stage 3</div>
+                        <h3>💾 Cloud Deployment</h3>
+                        <p class="ghost-text">Serialized model binaries load directly into hosted RAM for zero-latency online inference.</p>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <section id="about" class="viewport-snap-block" data-section="3">
+            <div class="liquid-glass-wrapper">
+                <div class="narrative-layout-box">
+                    <div class="mission-row-banner">
+                        <h3>🎯 The Mission</h3>
+                        <p>Democratizing macro-asset valuation by removing human bias, negotiating friction, and market information asymmetry through hyper-localized, data-driven machine learning models[cite: 25].</p>
+                    </div>
+                    <div class="split-narrative-cards">
+                        <div class="narrative-sub-panel">
+                            <h3>⚠️ The Market Problem</h3>
+                            <p class="ghost-text">Retail transactors face massive information gaps while non-linear physical depreciation makes assets lose value unevenly[cite: 25].</p>
+                        </div>
+                        <div class="narrative-sub-panel">
+                            <h3>💡 The Intelligent Solution</h3>
+                            <p class="ghost-text">Objective machine learning models anchor appraisal attributes immediately against global historical data matrices.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="contact" class="viewport-snap-block" data-section="4">
+            <div class="liquid-glass-wrapper">
+                <div class="asynchronous-terminal-box">
+                    <h3>✉️ Connect With The Developers</h3>
+                    <form id="contactTerminalForm" class="terminal-form-layout">
+                        <div class="input-field-group">
+                            <label>Name</label>
+                            <input type="text" id="userName" placeholder="Enter your full name" required>
+                        </div>
+                        <div class="input-field-group">
+                            <label>Email Address</label>
+                            <input type="email" id="userEmail" placeholder="Enter your email address" required>
+                        </div>
+                        <div class="input-field-group">
+                            <label>Message</label>
+                            <textarea id="userMessage" rows="4" placeholder="Write your message or feedback..." required></textarea>
+                        </div>
+                        <button type="submit" class="solar-corona-btn submit-btn-terminal">Execute Message Submission &rarr;</button>
+                    </form>
+                </div>
+            </div>
+
+            <footer class="system-node-footer">
+                <span class="node-telemetry">Deployment Node: Live Cloud Instance</span>
+                <span class="node-telemetry">System Status: Operational</span>
+                <span class="node-telemetry">Inference Engine: Online</span>
+            </footer>
+        </section>
+
+    </main>
+
+    <a href="#home" class="discrete-top-arrow" id="scrollTopArrowBtn">&#8593;</a>
+
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+</html>

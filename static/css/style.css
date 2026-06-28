@@ -1,0 +1,360 @@
+/* ==========================================================================
+   1. Design System Tokens & Global Architecture Reset
+   ========================================================================== */
+:root {
+    --bg-absolute-black: #030305;
+    --solar-core-orange: #ff6a00;
+    --solar-corona-glow: rgba(255, 106, 0, 0.5);
+    --color-housing-gold: #ffb020;
+    --color-auto-coral: #ff5a5f;
+    --color-text-primary: #ffffff;
+    --color-text-muted: #cbd5e1;
+    --color-text-ghost: #64748b;
+    
+    /* Amplified Liquid Glass Configuration Tokens */
+    --liquid-glass-bg: rgba(255, 255, 255, 0.01);
+    --liquid-glass-border: rgba(255, 255, 255, 0.03);
+    
+    --active-glass-bg: rgba(255, 255, 255, 0.04);
+    --active-glass-border: rgba(255, 255, 255, 0.15);
+    --active-glass-blur: blur(20px);
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html {
+    scroll-behavior: smooth;
+    overflow: hidden;
+}
+
+body {
+    background-color: var(--bg-absolute-black);
+    color: var(--color-text-primary);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    height: 100vh;
+    width: 100vw;
+    overflow: hidden;
+}
+
+/* ==========================================================================
+   2. Chromodynamic Eclipse Sunset Background Layer (Amplified Brightness)
+   ========================================================================== */
+.solar-background-canvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 2; /* Sits securely right beneath your content cards */
+    pointer-events: none;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.solar-core-orb {
+    width: 500px;
+    height: 500px;
+    border-radius: 50%;
+    background-color: var(--solar-core-orange);
+    filter: blur(90px); /* Reduced from 140px to concentrate and intensify the center brightness */
+    opacity: 0.45; /* Elevated from 0.22 to counter modern dark display washing */
+    transform: scale(1);
+    transition: opacity 0.7s cubic-bezier(0.25, 1, 0.5, 1), 
+                transform 0.7s cubic-bezier(0.25, 1, 0.5, 1);
+    box-shadow: 0 0 100px rgba(255, 106, 0, 0.3);
+}
+
+/* Pronounced Step-Down Curves for background dimming */
+body.active-section-1 .solar-core-orb { opacity: 0.45; transform: scale(1); }
+body.active-section-2 .solar-core-orb { opacity: 0.25; transform: scale(0.9); }
+body.active-section-3 .solar-core-orb { opacity: 0.15; transform: scale(0.85); }
+body.active-section-4 .solar-core-orb { opacity: 0.05; transform: scale(0.8); }
+
+/* ==========================================================================
+   3. Floating Pill Navigation Pod Deck (Fixed Layering & Hitbox)
+   ========================================================================== */
+.global-navbar-pod {
+    position: fixed;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: calc(100% - 40px);
+    max-width: 1000px;
+    height: 64px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 30px;
+    background: rgba(5, 5, 8, 0.75); /* Darkened slightly to make link items pop over bright orbs */
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 32px;
+    backdrop-filter: blur(25px);
+    z-index: 1000; /* CRITICAL: Must be higher than master-scroll-container to make link items clickable */
+}
+
+.nav-brand-container {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-weight: 700;
+    font-size: 15px;
+    letter-spacing: 0.5px;
+}
+
+.brand-geometric-logo {
+    width: 14px;
+    height: 14px;
+    background: linear-gradient(135deg, var(--color-housing-gold), var(--color-auto-coral));
+    clip-path: polygon(50% 0%, 100% 38%, 82% 100%, 18% 100%, 0% 38%);
+}
+
+.nav-links-cluster {
+    display: flex;
+    gap: 28px;
+    position: relative;
+    z-index: 1001;
+}
+
+.nav-link-item {
+    color: var(--color-text-muted);
+    text-decoration: none;
+    font-size: 13.5px;
+    font-weight: 600;
+    padding: 8px 0;
+    position: relative;
+    transition: color 0.25s ease;
+    cursor: pointer;
+}
+
+.nav-link-item:hover, .nav-link-item.active {
+    color: #ffffff;
+}
+
+.nav-link-item::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 0;
+    height: 2px;
+    background-color: var(--solar-core-orange);
+    transition: width 0.25s ease;
+    border-radius: 2px;
+}
+
+.nav-link-item.active::after {
+    width: 100%;
+}
+
+.nav-system-status {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 11px;
+    font-family: monospace;
+    color: var(--color-text-ghost);
+}
+
+.status-dot { width: 6px; height: 6px; border-radius: 50%; margin-left: 8px; }
+.green-pulse { background-color: #10b981; box-shadow: 0 0 8px #10b981; }
+.orange-pulse { background-color: var(--solar-core-orange); opacity: 0.8; }
+.status-label { margin-right: 4px; }
+
+/* ==========================================================================
+   4. Core Snap-Scrolling Layout Grid Matrix
+   ========================================================================== */
+.master-scroll-container {
+    width: 100vw;
+    height: 100vh;
+    overflow-y: scroll;
+    scroll-snap-type: y mandatory;
+    scroll-behavior: smooth;
+    position: relative;
+    z-index: 10; /* Lower than navbar, keeping hitboxes separated */
+}
+
+.master-scroll-container::-webkit-scrollbar {
+    display: none;
+}
+
+.viewport-snap-block {
+    width: 100vw;
+    height: 100vh;
+    scroll-snap-align: start;
+    scroll-snap-stop: always;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 110px 40px 40px 40px;
+}
+
+/* Liquid Glass Structural Panels */
+.liquid-glass-wrapper {
+    width: 100%;
+    max-width: 950px;
+    padding: 45px;
+    background: var(--liquid-glass-bg);
+    border: 1px solid var(--liquid-glass-border);
+    border-radius: 12px;
+    transform: scale(0.97);
+    opacity: 0.35; /* Keeps inactive rows clean and secondary */
+    transition: background 0.5s ease, border-color 0.5s ease, 
+                backdrop-filter 0.5s ease, transform 0.5s cubic-bezier(0.16, 1, 0.3, 1), 
+                opacity 0.5s ease;
+}
+
+/* Complete High-Contrast Illumination For Selected Viewport Container */
+.viewport-snap-block.active-in-view .liquid-glass-wrapper {
+    background: var(--active-glass-bg);
+    border-color: var(--active-glass-border);
+    backdrop-filter: var(--active-glass-blur);
+    transform: scale(1);
+    opacity: 1;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5),
+                inset 0 1px 0px rgba(255,255,255,0.05);
+}
+
+/* ==========================================================================
+   5. Viewport Content Layout & Hover Responses
+   ========================================================================== */
+
+.split-entry-matrix { display: flex; gap: 24px; width: 100%; }
+.appraisal-choice-card {
+    flex: 1;
+    background: rgba(255, 255, 255, 0.01);
+    border: 1px solid rgba(255, 255, 255, 0.03);
+    border-radius: 8px;
+    padding: 40px 30px;
+    text-align: center;
+    transition: transform 0.25s cubic-bezier(0.25, 1, 0.5, 1), border-color 0.25s ease;
+}
+
+.appraisal-choice-card:hover {
+    transform: translateY(-6px);
+    border-color: rgba(255, 255, 255, 0.12);
+}
+
+.card-icon { font-size: 32px; margin-bottom: 20px; }
+.appraisal-choice-card h2 { font-size: 19px; margin-bottom: 12px; font-weight: 600; color: #fff; }
+.appraisal-choice-card p { font-size: 13.5px; color: var(--color-text-muted); line-height: 1.6; margin-bottom: 30px; height: 64px; }
+
+/* --- Solar Corona Interactive Actions --- */
+.solar-corona-btn {
+    position: relative;
+    display: inline-block;
+    width: 100%;
+    padding: 14px 0;
+    border-radius: 6px;
+    font-size: 13.5px;
+    font-weight: 600;
+    text-decoration: none;
+    border: none;
+    cursor: pointer;
+    z-index: 5;
+    transition: transform 0.2s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+.btn-housing { background: var(--color-housing-gold); color: #030305; }
+.btn-automotive { background: var(--color-auto-coral); color: #ffffff; }
+
+.solar-corona-btn::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; width: 100%; height: 100%;
+    border-radius: 6px;
+    background: inherit;
+    filter: blur(12px);
+    opacity: 0;
+    z-index: -1;
+    transition: opacity 0.25s ease;
+}
+
+.solar-corona-btn:hover { transform: scale(1.01); }
+.solar-corona-btn:hover::before { opacity: 0.65; }
+.solar-corona-btn:active { transform: scale(0.99); }
+
+/* --- Section 2: Engine Grid --- */
+.section-headline-area h2 { font-size: 13px; text-transform: uppercase; letter-spacing: 2px; color: var(--color-text-ghost); margin-bottom: 36px; text-align: center; }
+.three-stage-pipeline { display: flex; gap: 20px; }
+.pipeline-node-card { flex: 1; padding: 30px 24px; background: rgba(255,255,255, 0.005); border: 1px solid rgba(255,255,255, 0.02); border-radius: 6px; transition: transform 0.25s ease-out; }
+.pipeline-node-card:hover { transform: translateY(-4px); border-color: rgba(255,255,255,0.06); }
+.node-badge { display: inline-block; padding: 3px 6px; font-size: 10px; font-family: monospace; color: var(--solar-core-orange); border: 1px solid rgba(255, 106, 0, 0.2); background: rgba(255, 106, 0, 0.04); border-radius: 4px; margin-bottom: 14px; }
+.pipeline-node-card h3 { font-size: 15px; margin-bottom: 10px; color: #fff; }
+
+.ghost-text { font-size: 13px; line-height: 1.6; color: var(--color-text-muted); transition: color 0.4s ease; }
+.viewport-snap-block:not(.active-in-view) .ghost-text { color: #334155; } /* Highly muted grey context for unselected items */
+
+/* --- Section 3: Narrative Panels --- */
+.narrative-layout-box { display: flex; flex-direction: column; gap: 20px; }
+.mission-row-banner { padding: 30px; background: rgba(255,255,255,0.005); border-radius: 6px; border: 1px solid rgba(255,255,255,0.02); }
+.mission-row-banner h3 { font-size: 16px; margin-bottom: 8px; color: #fff; }
+.mission-row-banner p { font-size: 14px; line-height: 1.6; color: var(--color-text-muted); }
+.split-narrative-cards { display: flex; gap: 20px; }
+.narrative-sub-panel { flex: 1; padding: 26px; background: rgba(255,255,255,0.005); border-radius: 6px; border: 1px solid rgba(255,255,255,0.02); transition: transform 0.25s ease-out; }
+.narrative-sub-panel:hover { transform: translateY(-4px); border-color: rgba(255,255,255,0.06); }
+.narrative-sub-panel h3 { font-size: 14px; margin-bottom: 8px; color: #fff; }
+
+/* --- Section 4: Terminal Form Core --- */
+.asynchronous-terminal-box { width: 100%; max-width: 520px; margin: 0 auto; }
+.asynchronous-terminal-box h3 { font-size: 16px; text-align: center; margin-bottom: 30px; color: #fff; }
+.input-field-group { margin-bottom: 18px; }
+.input-field-group label { display: block; font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; color: var(--color-text-muted); margin-bottom: 6px; }
+.input-field-group input, .input-field-group textarea {
+    width: 100%; padding: 12px; background: rgba(0, 0, 0, 0.5); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 6px; color: #fff; font-family: inherit; font-size: 13px; transition: border-color 0.3s;
+}
+.input-field-group input:focus, .input-field-group textarea:focus { outline: none; border-color: var(--solar-core-orange); }
+.submit-btn-terminal { background: none; border: 1px solid var(--solar-core-orange); color: var(--solar-core-orange); font-size: 13px; margin-top: 10px; }
+.submit-btn-terminal:hover { background: var(--solar-core-orange); color: var(--bg-absolute-black); }
+
+.system-node-footer { position: absolute; bottom: 0; left: 0; width: 100vw; height: 40px; display: flex; justify-content: center; align-items: center; gap: 40px; background: #010102; border-top: 1px solid rgba(255,255,255,0.02); z-index: 10; }
+.node-telemetry { font-family: monospace; font-size: 10.5px; color: #334155; }
+
+/* ==========================================================================
+   6. Floating Control Top Arrow
+   ========================================================================== */
+.discrete-top-arrow {
+    position: fixed;
+    bottom: 60px;
+    right: 40px;
+    width: 44px;
+    height: 44px;
+    background: rgba(5, 5, 8, 0.8);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    color: var(--color-text-muted);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-decoration: none;
+    font-size: 15px;
+    opacity: 0;
+    pointer-events: none;
+    transform: translateY(15px);
+    z-index: 999; /* Higher than the scroll container to preserve clicks */
+    backdrop-filter: blur(10px);
+    transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+.discrete-top-arrow::before {
+    content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%; border-radius: 8px; background: var(--solar-core-orange); filter: blur(10px); opacity: 0; z-index: -1; transition: opacity 0.3s ease;
+}
+
+.discrete-top-arrow.visible {
+    opacity: 1;
+    pointer-events: auto;
+    transform: translateY(0);
+}
+
+.discrete-top-arrow:hover {
+    color: #fff;
+    border-color: rgba(255, 255, 255, 0.25);
+    transform: translateY(-4px);
+}
+.discrete-top-arrow:hover::before { opacity: 0.35; }
