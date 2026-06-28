@@ -40,14 +40,12 @@
                     <div class="appraisal-choice-card">
                         <div class="card-icon">🏠</div>
                         <h2>House Price Prediction</h2>
-                        <p>Estimate residential real estate market values based on spatial, dimensional, and regional data features[cite: 48].</p>
                         <a href="/predict/house" class="solar-corona-btn btn-housing">Predict House Price &rarr;</a>
                     </div>
 
                     <div class="appraisal-choice-card">
                         <div class="card-icon">🚗</div>
                         <h2>Car Price Prediction</h2>
-                        <p>Estimate pre-owned vehicle valuations based on age, mechanical metrics, and wear indicators[cite: 53].</p>
                         <a href="/predict/car" class="solar-corona-btn btn-automotive">Predict Car Price &rarr;</a>
                     </div>
 
@@ -59,25 +57,32 @@
             <div class="liquid-glass-wrapper">
                 <div class="section-headline-area">
                     <h2>Engine Architecture & Pipeline</h2>
+                    <p class="section-subtitle">Our proprietary machine learning engine processes complex physical asset attributes in real-time to generate mathematically objective valuations.</p>
                 </div>
-                <div class="three-stage-pipeline">
+                <div class="pipeline-grid">
                     
                     <div class="pipeline-node-card">
                         <div class="node-badge">Stage 1</div>
-                        <h3>🛰️ Feature Hygiene</h3>
-                        <p class="ghost-text">Strips target noise columns (ID, Date, Postal Code) and processes core structural metrics[cite: 21].</p>
+                        <h3>🛰️ Data Ingestion & Hygiene</h3>
+                        <p class="ghost-text">Strips target noise columns and processes core structural metrics. Missing values are intelligently imputed using spatial medians.</p>
                     </div>
 
                     <div class="pipeline-node-card">
                         <div class="node-badge">Stage 2</div>
-                        <h3>🧠 Tuned Ensemble Core</h3>
-                        <p class="ghost-text">Aggregates an optimized cluster of 100+ separate Random Forest decision trees.</p>
+                        <h3>🧪 Cross-Validation</h3>
+                        <p class="ghost-text">Data is partitioned into stratified K-folds and evaluated against historical hold-out sets to prevent overfitting and ensure maximum generalization.</p>
                     </div>
 
                     <div class="pipeline-node-card">
                         <div class="node-badge">Stage 3</div>
+                        <h3>🧠 Tuned Ensemble Core</h3>
+                        <p class="ghost-text">Aggregates an optimized cluster of 100+ separate Random Forest decision trees. Hyperparameters are meticulously tuned via automated grid search.</p>
+                    </div>
+
+                    <div class="pipeline-node-card">
+                        <div class="node-badge">Stage 4</div>
                         <h3>💾 Cloud Deployment</h3>
-                        <p class="ghost-text">Serialized model binaries load directly into hosted RAM for zero-latency online inference.</p>
+                        <p class="ghost-text">Serialized model binaries load directly into hosted server RAM. A RESTful API provides zero-latency online inference for the client interface.</p>
                     </div>
 
                 </div>

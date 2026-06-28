@@ -241,18 +241,18 @@ body.active-section-4 .solar-core-orb { opacity: 0.05; transform: scale(0.8); }
     border-color: rgba(255, 255, 255, 0.12);
 }
 
-.card-icon { font-size: 32px; margin-bottom: 20px; }
-.appraisal-choice-card h2 { font-size: 19px; margin-bottom: 12px; font-weight: 600; color: #fff; }
-.appraisal-choice-card p { font-size: 13.5px; color: var(--color-text-muted); line-height: 1.6; margin-bottom: 30px; height: 64px; }
+.card-icon { font-size: 48px; margin-bottom: 24px; }
+.appraisal-choice-card h2 { font-size: 24px; margin-bottom: 16px; font-weight: 600; color: #fff; }
+.appraisal-choice-card p { font-size: 16px; color: var(--color-text-muted); line-height: 1.6; margin-bottom: 30px; height: 80px; }
 
 /* --- Solar Corona Interactive Actions --- */
 .solar-corona-btn {
     position: relative;
     display: inline-block;
     width: 100%;
-    padding: 14px 0;
+    padding: 16px 0;
     border-radius: 6px;
-    font-size: 13.5px;
+    font-size: 16px;
     font-weight: 600;
     text-decoration: none;
     border: none;
@@ -281,25 +281,26 @@ body.active-section-4 .solar-core-orb { opacity: 0.05; transform: scale(0.8); }
 .solar-corona-btn:active { transform: scale(0.99); }
 
 /* --- Section 2: Engine Grid --- */
-.section-headline-area h2 { font-size: 13px; text-transform: uppercase; letter-spacing: 2px; color: var(--color-text-ghost); margin-bottom: 36px; text-align: center; }
-.three-stage-pipeline { display: flex; gap: 20px; }
+.section-headline-area h2 { font-size: 18px; text-transform: uppercase; letter-spacing: 2px; color: var(--color-text-ghost); margin-bottom: 12px; text-align: center; }
+.section-subtitle { font-size: 15px; color: var(--color-text-muted); text-align: center; max-width: 600px; margin: 0 auto 36px auto; line-height: 1.6; }
+.pipeline-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
 .pipeline-node-card { flex: 1; padding: 30px 24px; background: rgba(255,255,255, 0.005); border: 1px solid rgba(255,255,255, 0.02); border-radius: 6px; transition: transform 0.25s ease-out; }
 .pipeline-node-card:hover { transform: translateY(-4px); border-color: rgba(255,255,255,0.06); }
-.node-badge { display: inline-block; padding: 3px 6px; font-size: 10px; font-family: monospace; color: var(--solar-core-orange); border: 1px solid rgba(255, 106, 0, 0.2); background: rgba(255, 106, 0, 0.04); border-radius: 4px; margin-bottom: 14px; }
-.pipeline-node-card h3 { font-size: 15px; margin-bottom: 10px; color: #fff; }
+.node-badge { display: inline-block; padding: 4px 8px; font-size: 12px; font-family: monospace; color: var(--solar-core-orange); border: 1px solid rgba(255, 106, 0, 0.2); background: rgba(255, 106, 0, 0.04); border-radius: 4px; margin-bottom: 14px; }
+.pipeline-node-card h3 { font-size: 20px; margin-bottom: 12px; color: #fff; }
 
-.ghost-text { font-size: 13px; line-height: 1.6; color: var(--color-text-muted); transition: color 0.4s ease; }
+.ghost-text { font-size: 15px; line-height: 1.6; color: var(--color-text-muted); transition: color 0.4s ease; }
 .viewport-snap-block:not(.active-in-view) .ghost-text { color: #334155; } /* Highly muted grey context for unselected items */
 
 /* --- Section 3: Narrative Panels --- */
 .narrative-layout-box { display: flex; flex-direction: column; gap: 20px; }
-.mission-row-banner { padding: 30px; background: rgba(255,255,255,0.005); border-radius: 6px; border: 1px solid rgba(255,255,255,0.02); }
-.mission-row-banner h3 { font-size: 16px; margin-bottom: 8px; color: #fff; }
-.mission-row-banner p { font-size: 14px; line-height: 1.6; color: var(--color-text-muted); }
+.mission-row-banner { padding: 40px; background: rgba(255,255,255,0.005); border-radius: 6px; border: 1px solid rgba(255,255,255,0.02); }
+.mission-row-banner h3 { font-size: 22px; margin-bottom: 12px; color: #fff; }
+.mission-row-banner p { font-size: 17px; line-height: 1.7; color: var(--color-text-muted); }
 .split-narrative-cards { display: flex; gap: 20px; }
-.narrative-sub-panel { flex: 1; padding: 26px; background: rgba(255,255,255,0.005); border-radius: 6px; border: 1px solid rgba(255,255,255,0.02); transition: transform 0.25s ease-out; }
+.narrative-sub-panel { flex: 1; padding: 32px; background: rgba(255,255,255,0.005); border-radius: 6px; border: 1px solid rgba(255,255,255,0.02); transition: transform 0.25s ease-out; }
 .narrative-sub-panel:hover { transform: translateY(-4px); border-color: rgba(255,255,255,0.06); }
-.narrative-sub-panel h3 { font-size: 14px; margin-bottom: 8px; color: #fff; }
+.narrative-sub-panel h3 { font-size: 20px; margin-bottom: 12px; color: #fff; }
 
 /* --- Section 4: Terminal Form Core --- */
 .asynchronous-terminal-box { width: 100%; max-width: 520px; margin: 0 auto; }
