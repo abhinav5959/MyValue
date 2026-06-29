@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prediction Result | MyValue</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+
+    <style>
+        /* ================= BASE ================= */
+        body {
+            margin: 0;
+            background: var(--bg-absolute-black);
+            color: white;
+            font-family: Arial, sans-serif;
+            overflow: hidden;
+        }
+
+        /* ================= BACKGROUND (SAME AS INDEX) ================= */
+        .solar-background-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: 1;
+            pointer-events: none;
+
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            background: radial-gradient(
+                circle at center,
+                rgba(255, 106, 0, 0.18),
+                rgba(3, 3, 5, 1) 70%
+            );
+        }
+
+        .solar-core-orb {
+            width: 450px;
+            height: 450px;
+            border-radius: 50%;
+            background: var(--solar-core-orange);
+            filter: blur(120px);
+            opacity: 0.35;
+            box-shadow: 0 0 160px rgba(255, 106, 0, 0.3);
+        }
+
+        /* ================= NAVBAR (INDEX EXACT STYLE) ================= */
+        .global-navbar-pod {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: calc(100% - 40px);
+            max-width: 1000px;
+            height: 64px;
+
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 30px;
+
+            background: rgba(5, 5, 8, 0.75);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 32px;
+            backdrop-filter: blur(25px);
+            z-index: 1000;
+        }
+
+        .nav-brand-container {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 700;
+            color: white;
+        }
+
+        .brand-geometric-logo {
+            width: 14px;
+            height: 14px;
+            background: linear-gradient(135deg, #ffb020, #ff5a5f);
+            clip-path: polygon(50% 0%, 100% 38%, 82% 100%, 18% 100%, 0% 38%);
+        }
+
+        .nav-links-cluster {
+            display: flex;
+            gap: 25px;
+        }
+
+        .nav-link-item {
+            position: relative;
+            color: #cbd5e1;
+            text-decoration: none;
+            font-weight: 600;
+            padding: 6px 4px;
+            display: inline-block;
+        }
+
+        /* FIXED UNDERLINE */
+        .nav-link-item::after {
+            content: "";
+            position: absolute;
+            left: 50%;
+            bottom: -6px;
+            transform: translateX(-50%);
+            width: 0;
+            height: 2px;
+            background: #ff6a00;
+            transition: width 0.3s ease;
+            border-radius: 2px;
+        }
+
+        /* ACTIVE STATE */
+        .nav-link-item.active {
+            color: #ffffff;
+        }
+
+        .nav-link-item.active::after {
+            width: 100%;
+        }
+
+        /* ================= STATUS DOTS ================= */
+        .nav-system-status {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 11px;
+            color: #cbd5e1;
+        }
+
+        .status-dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+        }
+
+        .green-pulse {
+            background: #10b981;
+            box-shadow: 0 0 8px #10b981;
+        }
+
+        .orange-pulse {
+            background: #ff6a00;
+            box-shadow: 0 0 8px #ff6a00;
+        }
+
+        /* ================= RESULT UI ================= */
+        .result-container {
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            z-index: 5;
+            text-align: center;
+        }
+
+        .result-card {
+            padding: 50px;
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 16px;
+            backdrop-filter: blur(15px);
+            min-width: 340px;
+        }
+
+        .result-value {
+            font-size: 55px;
+            font-weight: 700;
+            color: #ff6a00;
+            margin: 20px 0;
+        }
+
+        .btn-back {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 10px 18px;
+            border: 1px solid #ff6a00;
+            color: #ff6a00;
+            text-decoration: none;
+            border-radius: 8px;
+            transition: 0.3s;
+        }
+
+        .btn-back:hover {
+            background: #ff6a00;
+            color: black;
+        }
+    </style>
+</head>
+
+<body>
+
+<!-- BACKGROUND -->
+<div class="solar-background-canvas">
+    <div class="solar-core-orb"></div>
+</div>
+
+<!-- NAVBAR -->
+<nav class="global-navbar-pod">
+
+    <div class="nav-brand-container">
+        <div class="brand-geometric-logo"></div>
+        <span class="brand-text">MyValue</span>
+    </div>
+
+    <div class="nav-links-cluster">
+
+        <a href="/" class="nav-link-item {% if request.path == '/' %}active{% endif %}">
+            Home
+        </a>
+
+        <a href="/predict/car" class="nav-link-item {% if request.path == '/predict/car' %}active{% endif %}">
+            Car Prediction
+        </a>
+
+        <a href="#" class="nav-link-item {% if '/result' in request.path %}active{% endif %}">
+            Result
+        </a>
+
+    </div>
+
+    <div class="nav-system-status">
+        <span class="status-dot green-pulse"></span>
+        <span class="status-label">Server Active</span>
+
+        <span class="status-dot orange-pulse"></span>
+        <span class="status-label">Model Standby</span>
+    </div>
+
+</nav>
+
+<!-- RESULT -->
+<div class="result-container">
+    <div class="result-card">
+        <h2>Predicted Car Price</h2>
+
+        <div class="result-value" id="price">₹ 0</div>
+
+        <a href="/predict/car" class="btn-back">Predict Again →</a>
+    </div>
+</div>
+
+<!-- ANIMATION -->
+<script>
+    let el = document.getElementById("price");
+    let finalValue = parseFloat("{{ prediction }}");
+
+    let startTime = null;
+    let duration = 1200;
+
+    function animate(timestamp) {
+        if (!startTime) startTime = timestamp;
+
+        let progress = timestamp - startTime;
+        let value = Math.min((progress / duration) * finalValue, finalValue);
+
+        el.innerHTML = "₹ " + value.toFixed(2) + " Lakhs";
+
+        if (progress < duration) {
+            requestAnimationFrame(animate);
+        }
+    }
+
+    requestAnimationFrame(animate);
+</script>
+
+</body>
+</html>
