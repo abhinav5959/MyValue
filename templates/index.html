@@ -11,7 +11,7 @@
     <div class="solar-background-canvas">
         <div class="solar-core-orb"></div>
     </div>
-
+    <div class="night-overlay"></div>
     <nav class="global-navbar-pod">
         <div class="nav-brand-container">
             <div class="brand-geometric-logo"></div>
@@ -38,15 +38,19 @@
                 <div class="split-entry-matrix">
                     
                     <div class="appraisal-choice-card">
-                        <div class="card-icon">🏠</div>
+                        <img src="{{ url_for('static', filename='images/house.png') }}" class="card-icon">
                         <h2>House Price Prediction</h2>
-                        <a href="/predict/house" class="solar-corona-btn btn-housing">Predict House Price &rarr;</a>
+                        <a href="/predict/house" class="solar-corona-btn btn-housing">
+                            Predict House Price →
+                        </a>
                     </div>
 
                     <div class="appraisal-choice-card">
-                        <div class="card-icon">🚗</div>
+                        <img src="{{ url_for('static', filename='images/car.png') }}" class="card-icon">
                         <h2>Car Price Prediction</h2>
-                        <a href="/predict/car" class="solar-corona-btn btn-automotive">Predict Car Price &rarr;</a>
+                        <a href="/predict/car" class="solar-corona-btn btn-automotive">
+                            Predict Car Price →
+                        </a>
                     </div>
 
                 </div>
@@ -131,16 +135,14 @@
                     </form>
                 </div>
             </div>
-
-            <footer class="system-node-footer">
-                <span class="node-telemetry">Deployment Node: Live Cloud Instance</span>
-                <span class="node-telemetry">System Status: Operational</span>
-                <span class="node-telemetry">Inference Engine: Online</span>
-            </footer>
+            
+            
         </section>
+       
+
 
     </main>
-
+    
     <a href="#home" class="discrete-top-arrow" id="scrollTopArrowBtn">&#8593;</a>
 
     <script src="{{ url_for('static', filename='js/main.js') }}"></script>
