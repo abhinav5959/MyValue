@@ -1,3 +1,7 @@
 Flask
+gunicorn
 supabase
 python-dotenv
+numpy
+pandas
+scikit-learn

@@ -55,6 +55,8 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
+    background: url("../images/bg.png") no-repeat center center;
+    background-size: cover;
 }
 
 .solar-core-orb {
@@ -204,7 +206,7 @@ body.active-section-4 .solar-core-orb { opacity: 0.05; transform: scale(0.8); }
     border: 1px solid var(--liquid-glass-border);
     border-radius: 12px;
     transform: scale(0.97);
-    opacity: 0.35; /* Keeps inactive rows clean and secondary */
+    opacity: 1; /* Keeps inactive rows clean and secondary */
     transition: background 0.5s ease, border-color 0.5s ease, 
                 backdrop-filter 0.5s ease, transform 0.5s cubic-bezier(0.16, 1, 0.3, 1), 
                 opacity 0.5s ease;
@@ -228,10 +230,11 @@ body.active-section-4 .solar-core-orb { opacity: 0.05; transform: scale(0.8); }
 .split-entry-matrix { display: flex; gap: 24px; width: 100%; }
 .appraisal-choice-card {
     flex: 1;
+   /* max-width: 320px; /* Limits the card width */
     background: rgba(255, 255, 255, 0.01);
     border: 1px solid rgba(255, 255, 255, 0.03);
     border-radius: 8px;
-    padding: 40px 30px;
+    padding: 15px 20px; /* Reduced from 40px 30px */
     text-align: center;
     transition: transform 0.25s cubic-bezier(0.25, 1, 0.5, 1), border-color 0.25s ease;
 }
@@ -241,7 +244,16 @@ body.active-section-4 .solar-core-orb { opacity: 0.05; transform: scale(0.8); }
     border-color: rgba(255, 255, 255, 0.12);
 }
 
-.card-icon { font-size: 48px; margin-bottom: 24px; }
+.card-icon {
+    width: 35px;   /* reduced size */
+    height: 35px;  /* reduced size */
+    object-fit: contain;
+    display: block;
+    margin: 0 auto 10px;
+
+    filter: drop-shadow(0 0 6px rgba(245, 197, 66, 0.6));
+    transition: 0.3s ease;
+}
 .appraisal-choice-card h2 { font-size: 24px; margin-bottom: 16px; font-weight: 600; color: #fff; }
 .appraisal-choice-card p { font-size: 16px; color: var(--color-text-muted); line-height: 1.6; margin-bottom: 30px; height: 80px; }
 
@@ -314,14 +326,13 @@ body.active-section-4 .solar-core-orb { opacity: 0.05; transform: scale(0.8); }
 .submit-btn-terminal { background: none; border: 1px solid var(--solar-core-orange); color: var(--solar-core-orange); font-size: 13px; margin-top: 10px; }
 .submit-btn-terminal:hover { background: var(--solar-core-orange); color: var(--bg-absolute-black); }
 
-.system-node-footer { position: absolute; bottom: 0; left: 0; width: 100vw; height: 40px; display: flex; justify-content: center; align-items: center; gap: 40px; background: #010102; border-top: 1px solid rgba(255,255,255,0.02); z-index: 10; }
-.node-telemetry { font-family: monospace; font-size: 10.5px; color: #334155; }
+
 
 /* ==========================================================================
    6. Floating Control Top Arrow
    ========================================================================== */
 .discrete-top-arrow {
-    position: fixed;
+    position: absolute;
     bottom: 60px;
     right: 40px;
     width: 44px;
@@ -359,3 +370,35 @@ body.active-section-4 .solar-core-orb { opacity: 0.05; transform: scale(0.8); }
     transform: translateY(-4px);
 }
 .discrete-top-arrow:hover::before { opacity: 0.35; }
+.night-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+
+    background: #000;
+
+    opacity: 0;
+    pointer-events: none;
+
+    z-index: 3; /* above bg but below content */
+
+    transition: opacity 0.6s ease;
+}
+body.active-section-1 .night-overlay {
+    opacity: 0.08;
+}
+
+body.active-section-2 .night-overlay {
+    opacity: 0.28;
+}
+
+body.active-section-3 .night-overlay {
+    opacity: 0.55;
+}
+
+body.active-section-4 .night-overlay {
+    opacity: 0.78;
+}
+
