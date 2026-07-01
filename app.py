@@ -20,7 +20,7 @@ else:
     supabase = None
 # Load model
 car_model = pickle.load(open("models/car.pkl", "rb"))
-
+house_model = pickle.load(open("models/house_price_model.pkl", "rb"))
 @app.route('/')
 def index():
     """
@@ -32,13 +32,71 @@ def index():
 
 # Temporary placeholder development pathways for your friends' future prediction logic
 @app.route('/predict/house', methods=['GET'])
-def house_predict_placeholder():
-    """
-    Real Estate Pathway Blueprint
-    Aborting to a simple layout confirmation text for now. Your friends will 
-    re-map this link directly to 'house_entry.html' once they start coding.
-    """
-    return "<h3>Real Estate Form Vector Standby</h3><p>The frontend interface is operational. Ready for your friends to inject the 20-dimensional input fields.</p><br><a href='/'>&larr; Return to Main App</a>"
+def house_page():
+    return render_template('house.html')
+
+@app.route('/predict/house/result', methods=['POST'])
+def house_result():
+    import numpy as np
+
+    try:
+        # 1. Extract the 10 inputs from the house.html form fields
+        bedrooms = int(request.form['number_of_bedrooms'])
+        bathrooms = int(request.form['number_of_bathrooms'])
+        living_area = float(request.form['living_area'])
+        lot_area = float(request.form['lot_area'])
+        floors = int(request.form['number_of_floors'])
+        condition = int(request.form['condition_of_the_house'])
+        grade = int(request.form['grade_of_the_house'])
+        built_year = int(request.form['built_year'])
+        schools = int(request.form['number_of_schools_nearby'])
+        airport_dist = float(request.form['distance_from_the_airport'])
+
+    except (ValueError, KeyError) as e:
+        return render_template('hresult.html', prediction=None, error='Invalid input: please enter valid numeric values.')
+
+    # 2. Hardcoded behind-the-scenes engineering for columns omitted from screen
+    waterfront = 0          
+    views = 0               
+    area_ex_basement = living_area
+    basement = 0.0          
+    renovation_year = 0     
+    latitude = 47.5600      
+    longitude = -122.2140   
+    living_area_renov = living_area
+    lot_area_renov = lot_area
+
+    # 3. Construct your exact 19-feature vector matching your model sequence
+    features = np.array([[
+        bedrooms,          # 1. number of bedrooms
+        bathrooms,         # 2. number of bathrooms
+        living_area,       # 3. living area
+        lot_area,          # 4. lot area
+        floors,            # 5. number of floors
+        waterfront,        # 6. waterfront present
+        views,             # 7. number of views
+        condition,         # 8. condition of the house
+        grade,             # 9. grade of the house
+        area_ex_basement,  # 10. Area of the house(excluding basement)
+        basement,          # 11. Area of the basement
+        built_year,        # 12. Built Year
+        renovation_year,   # 13. Renovation Year
+        latitude,          # 14. Lattitude
+        longitude,         # 15. Longitude
+        living_area_renov, # 16. living_area_renov
+        lot_area_renov,    # 17. lot_area_renov
+        schools,           # 18. Number of schools nearby
+        airport_dist       # 19. Distance from the airport
+    ]])
+
+    try:
+        prediction = house_model.predict(features)[0]
+    except Exception:
+        return render_template('hresult.html', prediction=None, error='Model error during prediction.')
+
+    return render_template("hresult.html", prediction=round(prediction, 2), error=None)
+
+   
 
 @app.route('/predict/car', methods=['GET'])
 def car_page():
