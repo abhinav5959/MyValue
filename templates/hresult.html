@@ -198,7 +198,7 @@ h2 {
         <p class="subtitle">Based on your properties calculated features</p>
         
         <div class="price-display" id="animated-price" data-target="{{ prediction }}">
-            $0.00
+            ₹0.00 Lakhs
         </div>
         
         <a href="/predict/house" class="action-btn">Predict Another ➔</a>
@@ -226,11 +226,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
         const currentValue = easeProgress * targetValue;
 
-        // Formats the output string to include comma separators and exact 2 decimal positions
-        priceDisplay.textContent = "$" + currentValue.toLocaleString(undefined, {
+        // Formats the output string to include Rupees symbol and Lakhs suffix text
+        priceDisplay.textContent = "₹" + currentValue.toLocaleString(undefined, {
             minimumFractionDigits: 2,
             maximumFractionDigits: 2
-        });
+        }) + " Lakhs";
 
         if (progress < 1) {
             requestAnimationFrame(updateCounter);
