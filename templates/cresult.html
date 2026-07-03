@@ -189,6 +189,35 @@
             background: #ff6a00;
             color: black;
         }
+
+        .result-card.error-card {
+            border-color: rgba(239, 68, 68, 0.2);
+            background: rgba(239, 68, 68, 0.02);
+        }
+
+        .error-title {
+            color: #ef4444;
+            margin-top: 0;
+            margin-bottom: 10px;
+            font-size: 28px;
+        }
+
+        .error-message {
+            color: #cbd5e1;
+            font-size: 15px;
+            margin-bottom: 30px;
+            line-height: 1.5;
+        }
+
+        .btn-back.error-btn {
+            border-color: #ef4444;
+            color: #ef4444;
+        }
+
+        .btn-back.error-btn:hover {
+            background: #ef4444;
+            color: white;
+        }
     </style>
 </head>
 
@@ -235,6 +264,13 @@
 
 <!-- RESULT -->
 <div class="result-container">
+    {% if error %}
+    <div class="result-card error-card">
+        <h2 class="error-title">Prediction Failed</h2>
+        <p class="error-message">{{ error }}</p>
+        <a href="/predict/car" class="btn-back error-btn">Predict Again →</a>
+    </div>
+    {% else %}
     <div class="result-card">
         <h2>Predicted Car Price</h2>
 
@@ -242,30 +278,32 @@
 
         <a href="/predict/car" class="btn-back">Predict Again →</a>
     </div>
+    {% endif %}
 </div>
 
 <!-- ANIMATION -->
 <script>
     let el = document.getElementById("price");
-    let finalValue = parseFloat("{{ prediction }}");
+    if (el) {
+        let finalValue = parseFloat("{{ prediction }}");
+        let startTime = null;
+        let duration = 1200;
 
-    let startTime = null;
-    let duration = 1200;
+        function animate(timestamp) {
+            if (!startTime) startTime = timestamp;
 
-    function animate(timestamp) {
-        if (!startTime) startTime = timestamp;
+            let progress = timestamp - startTime;
+            let value = Math.min((progress / duration) * finalValue, finalValue);
 
-        let progress = timestamp - startTime;
-        let value = Math.min((progress / duration) * finalValue, finalValue);
+            el.innerHTML = "₹ " + value.toFixed(2) + " Lakhs";
 
-        el.innerHTML = "₹ " + value.toFixed(2) + " Lakhs";
-
-        if (progress < duration) {
-            requestAnimationFrame(animate);
+            if (progress < duration) {
+                requestAnimationFrame(animate);
+            }
         }
-    }
 
-    requestAnimationFrame(animate);
+        requestAnimationFrame(animate);
+    }
 </script>
 
 </body>
