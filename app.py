@@ -1,13 +1,24 @@
 import os
 import pickle
+import warnings
 import numpy as np
 import pandas as pd
+
+# Suppress sklearn unpickling warnings for clean console outputs
+warnings.filterwarnings("ignore", category=UserWarning)
+try:
+    from sklearn.exceptions import InconsistentVersionWarning
+    warnings.filterwarnings("ignore", category=InconsistentVersionWarning)
+except ImportError:
+    pass
 
 from flask import Flask, render_template, abort, request, jsonify
 from supabase import create_client, Client
 from dotenv import load_dotenv
 
 load_dotenv()
+
+USD_TO_INR_RATE = float(os.environ.get("USD_TO_INR_RATE", 83.0))
 
 app = Flask(__name__)
 
@@ -58,8 +69,26 @@ def house_result():
         basement = float(request.form['basement_area'])
         renovation_year = int(request.form['renovation_year'])
 
+        # Boundary checks for inputs
+        if not (0 <= bedrooms <= 20): raise ValueError("Bedrooms must be between 0 and 20.")
+        if not (0 <= bathrooms <= 10): raise ValueError("Bathrooms must be between 0 and 10.")
+        if not (1 <= floors <= 5): raise ValueError("Floors must be between 1 and 5.")
+        if not (0 <= views <= 4): raise ValueError("View inspections must be between 0 and 4.")
+        if not (0 <= schools <= 5): raise ValueError("Nearby schools must be between 0 and 5.")
+        if not (100 <= living_area <= 20000): raise ValueError("Living area must be between 100 and 20,000 sqft.")
+        if waterfront not in [0, 1]: raise ValueError("Waterfront option must be inland (0) or waterfront (1).")
+        if not (1 <= condition <= 5): raise ValueError("Condition rating must be between 1 and 5.")
+        if not (0 <= airport_dist <= 200): raise ValueError("Airport distance must be between 0 and 200 km.")
+        if not (1 <= grade <= 13): raise ValueError("Construction grade must be between 1 and 13.")
+        if not (100 <= area_ex_basement <= 15000): raise ValueError("Above-ground area must be between 100 and 15,000 sqft.")
+        if not (0 <= basement <= 10000): raise ValueError("Basement area must be between 0 and 10,000 sqft.")
+        if not (1900 <= built_year <= 2026): raise ValueError("Year built must be between 1900 and 2026.")
+        if not (0 <= renovation_year <= 2026): raise ValueError("Year renovated must be between 0 and 2026.")
+        if not (100 <= lot_area <= 100000): raise ValueError("Total lot size must be between 100 and 100,000 sqft.")
+
     except (ValueError, KeyError) as e:
-        return render_template('hresult.html', prediction=None, error='Invalid input: please enter valid numeric values.')
+        error_msg = str(e) if str(e) else 'Invalid input: please enter valid numeric values.'
+        return render_template('hresult.html', prediction=None, error=error_msg)
 
     # 2. Hardcoded behind-the-scenes engineering for spatial/renovation columns omitted from screen
     latitude = 47.5600      
@@ -98,9 +127,9 @@ def house_result():
     ])
 
     try:
-        # Prediction output is in USD. We convert it to INR (1 USD = 83 INR) and then to Lakhs (divide by 100,000)
+        # Prediction output is in USD. We convert it to INR dynamically and then to Lakhs (divide by 100,000)
         prediction_usd = house_model.predict(features)[0]
-        prediction_inr_lakhs = (prediction_usd * 83.0) / 100000.0
+        prediction_inr_lakhs = (prediction_usd * USD_TO_INR_RATE) / 100000.0
     except Exception as e:
         return render_template('hresult.html', prediction=None, error='Model error during prediction.')
 
@@ -125,8 +154,21 @@ def car_result():
         seats = int(request.form['seats'])
         car_age = int(request.form['car_age'])
 
+        # Boundary checks for car inputs
+        if not (0 <= km_driven <= 1000000): raise ValueError("Kilometers driven must be between 0 and 1,000,000.")
+        if fuel not in [1, 2, 3]: raise ValueError("Fuel option must be Petrol (1), Diesel (2), or CNG (3).")
+        if seller_type not in [0, 1]: raise ValueError("Seller type must be Dealer (0) or Individual (1).")
+        if transmission not in [0, 1]: raise ValueError("Transmission must be Manual (0) or Automatic (1).")
+        if not (1 <= owner <= 10): raise ValueError("Owner count must be between 1 and 10.")
+        if not (0.0 <= mileage <= 100.0): raise ValueError("Mileage must be between 0.0 and 100.0 km/l.")
+        if not (100 <= engine <= 10000): raise ValueError("Engine size must be between 100 and 10,000 CC.")
+        if not (5.0 <= max_power <= 1000.0): raise ValueError("Max power must be between 5.0 and 1,000.0 bhp.")
+        if not (2 <= seats <= 20): raise ValueError("Seats must be between 2 and 20.")
+        if not (0 <= car_age <= 50): raise ValueError("Car age must be between 0 and 50 years.")
+
     except (ValueError, KeyError) as e:
-        return render_template('cresult.html', prediction=None, error='Invalid input: please enter valid numeric values.')
+        error_msg = str(e) if str(e) else 'Invalid input: please enter valid numeric values.'
+        return render_template('cresult.html', prediction=None, error=error_msg)
 
     # Using pandas DataFrame to preserve feature/column names for the scikit-learn model and prevent warnings
     features = pd.DataFrame([[
