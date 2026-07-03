@@ -199,44 +199,45 @@ h2 {
             <!-- 1. Bedrooms -->
             <div class="input-group">
                 <label for="number_of_bedrooms">Number of Bedrooms</label>
-                <input type="number" id="number_of_bedrooms" name="number_of_bedrooms" min="0" max="20" value="3" required>
+                <input type="number" id="number_of_bedrooms" name="number_of_bedrooms" min="0" max="20" required>
             </div>
 
             <!-- 2. Bathrooms -->
             <div class="input-group">
                 <label for="number_of_bathrooms">Number of Bathrooms</label>
-                <input type="number" id="number_of_bathrooms" name="number_of_bathrooms" min="0" max="10" step="0.5" value="2" required>
+                <input type="number" id="number_of_bathrooms" name="number_of_bathrooms" min="0" max="10" step="0.5" required>
             </div>
 
             <!-- 3. Floors -->
             <div class="input-group">
                 <label for="number_of_floors">Number of Floors</label>
-                <input type="number" id="number_of_floors" name="number_of_floors" min="1" max="5" value="1" required>
+                <input type="number" id="number_of_floors" name="number_of_floors" min="1" max="5" required>
             </div>
 
             <!-- 4. Views -->
             <div class="input-group">
                 <label for="number_of_views">Number of View Inspections (0-4)</label>
-                <input type="number" id="number_of_views" name="number_of_views" min="0" max="4" value="0" required>
+                <input type="number" id="number_of_views" name="number_of_views" min="0" max="4" required>
             </div>
 
             <!-- 5. Schools Nearby -->
             <div class="input-group">
                 <label for="number_of_schools_nearby">Schools Nearby</label>
-                <input type="number" id="number_of_schools_nearby" name="number_of_schools_nearby" min="0" max="5" value="2" required>
+                <input type="number" id="number_of_schools_nearby" name="number_of_schools_nearby" min="0" max="5" required>
             </div>
 
             <!-- 6. Living Area -->
             <div class="input-group">
                 <label for="living_area">Total Living Area (sqft)</label>
-                <input type="number" id="living_area" name="living_area" min="100" max="20000" value="1800" required>
+                <input type="number" id="living_area" name="living_area" min="100" max="20000" required>
             </div>
 
             <!-- 7. Waterfront Present -->
             <div class="input-group">
                 <label for="waterfront">Waterfront Location?</label>
-                <select id="waterfront" name="waterfront">
-                    <option value="0" selected>No (Inland)</option>
+                <select id="waterfront" name="waterfront" required>
+                    <option value="" disabled selected hidden>-- Choose Location --</option>
+                    <option value="0">No (Inland)</option>
                     <option value="1">Yes (Waterfront Property)</option>
                 </select>
             </div>
@@ -244,10 +245,11 @@ h2 {
             <!-- 8. Condition of House -->
             <div class="input-group">
                 <label for="condition_of_the_house">Condition Rating (1-5)</label>
-                <select id="condition_of_the_house" name="condition_of_the_house">
+                <select id="condition_of_the_house" name="condition_of_the_house" required>
+                    <option value="" disabled selected hidden>-- Choose Rating --</option>
                     <option value="1">1 (Poor / Worn Out)</option>
                     <option value="2">2 (Fair)</option>
-                    <option value="3" selected>3 (Average / Maintained)</option>
+                    <option value="3">3 (Average / Maintained)</option>
                     <option value="4">4 (Good)</option>
                     <option value="5">5 (Excellent)</option>
                 </select>
@@ -256,43 +258,43 @@ h2 {
             <!-- 9. Distance from Airport -->
             <div class="input-group">
                 <label for="distance_from_the_airport">Distance from Airport (km)</label>
-                <input type="number" id="distance_from_the_airport" name="distance_from_the_airport" min="0" max="200" step="0.1" value="15.5" required>
+                <input type="number" id="distance_from_the_airport" name="distance_from_the_airport" min="0" max="200" step="0.1" required>
             </div>
 
             <!-- 10. Grade of House -->
             <div class="input-group">
                 <label for="grade_of_the_house">Construction Grade (1-13)</label>
-                <input type="number" id="grade_of_the_house" name="grade_of_the_house" min="1" max="13" value="7" required>
+                <input type="number" id="grade_of_the_house" name="grade_of_the_house" min="1" max="13" required>
             </div>
 
             <!-- 11. Area of House Without Basement -->
             <div class="input-group">
                 <label for="area_without_basement">Above-Ground Area (sqft)</label>
-                <input type="number" id="area_without_basement" name="area_without_basement" min="100" max="15000" value="1500" required>
+                <input type="number" id="area_without_basement" name="area_without_basement" min="100" max="15000" required>
             </div>
 
             <!-- 12. Basement Area -->
             <div class="input-group">
                 <label for="basement_area">Basement Area (sqft)</label>
-                <input type="number" id="basement_area" name="basement_area" min="0" max="10000" value="300" required>
+                <input type="number" id="basement_area" name="basement_area" min="0" max="10000" required>
             </div>
 
             <!-- 13. Built Year -->
             <div class="input-group">
                 <label for="built_year">Year Built</label>
-                <input type="number" id="built_year" name="built_year" min="1900" max="2026" value="2015" required>
+                <input type="number" id="built_year" name="built_year" min="1900" max="2026" required>
             </div>
 
             <!-- 14. Renovation Year -->
             <div class="input-group">
                 <label for="renovation_year">Year Renovated (0 if never)</label>
-                <input type="number" id="renovation_year" name="renovation_year" min="0" max="2026" value="0" required>
+                <input type="number" id="renovation_year" name="renovation_year" min="0" max="2026" required>
             </div>
 
             <!-- 15. Lot Area -->
             <div class="input-group">
                 <label for="lot_area">Total Lot Size / Plot Area (sqft)</label>
-                <input type="number" id="lot_area" name="lot_area" min="100" max="100000" value="5000" required>
+                <input type="number" id="lot_area" name="lot_area" min="100" max="100000" required>
             </div>
 
             <!-- Form Submission Button -->
