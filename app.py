@@ -1,6 +1,7 @@
 import os
 import pickle
 import numpy as np
+import pandas as pd
 
 from flask import Flask, render_template, abort, request, jsonify
 from supabase import create_client, Client
@@ -37,10 +38,8 @@ def house_page():
 
 @app.route('/predict/house/result', methods=['POST'])
 def house_result():
-    import numpy as np
-
     try:
-        # 1. Extract the 10 inputs from the house.html form fields
+        # 1. Extract all 15 inputs from the house.html form fields
         bedrooms = int(request.form['number_of_bedrooms'])
         bathrooms = int(request.form['number_of_bathrooms'])
         living_area = float(request.form['living_area'])
@@ -52,22 +51,25 @@ def house_result():
         schools = int(request.form['number_of_schools_nearby'])
         airport_dist = float(request.form['distance_from_the_airport'])
 
+        # New inputs from the updated form:
+        waterfront = int(request.form['waterfront'])
+        views = int(request.form['number_of_views'])
+        area_ex_basement = float(request.form['area_without_basement'])
+        basement = float(request.form['basement_area'])
+        renovation_year = int(request.form['renovation_year'])
+
     except (ValueError, KeyError) as e:
         return render_template('hresult.html', prediction=None, error='Invalid input: please enter valid numeric values.')
 
-    # 2. Hardcoded behind-the-scenes engineering for columns omitted from screen
-    waterfront = 0          
-    views = 0               
-    area_ex_basement = living_area
-    basement = 0.0          
-    renovation_year = 0     
+    # 2. Hardcoded behind-the-scenes engineering for spatial/renovation columns omitted from screen
     latitude = 47.5600      
     longitude = -122.2140   
     living_area_renov = living_area
     lot_area_renov = lot_area
 
-    # 3. Construct your exact 19-feature vector matching your model sequence
-    features = np.array([[
+    # 3. Construct your exact 19-feature vector matching your model sequence using pandas DataFrame
+    # to preserve column/feature names and prevent sklearn version/feature warnings.
+    features = pd.DataFrame([[
         bedrooms,          # 1. number of bedrooms
         bathrooms,         # 2. number of bathrooms
         living_area,       # 3. living area
@@ -87,14 +89,22 @@ def house_result():
         lot_area_renov,    # 17. lot_area_renov
         schools,           # 18. Number of schools nearby
         airport_dist       # 19. Distance from the airport
-    ]])
+    ]], columns=[
+        'number of bedrooms', 'number of bathrooms', 'living area', 'lot area',
+        'number of floors', 'waterfront present', 'number of views', 'condition of the house',
+        'grade of the house', 'Area of the house(excluding basement)', 'Area of the basement',
+        'Built Year', 'Renovation Year', 'Lattitude', 'Longitude',
+        'living_area_renov', 'lot_area_renov', 'Number of schools nearby', 'Distance from the airport'
+    ])
 
     try:
-        prediction = house_model.predict(features)[0]
-    except Exception:
+        # Prediction output is in USD. We convert it to INR (1 USD = 83 INR) and then to Lakhs (divide by 100,000)
+        prediction_usd = house_model.predict(features)[0]
+        prediction_inr_lakhs = (prediction_usd * 83.0) / 100000.0
+    except Exception as e:
         return render_template('hresult.html', prediction=None, error='Model error during prediction.')
 
-    return render_template("hresult.html", prediction=round(prediction, 2), error=None)
+    return render_template("hresult.html", prediction=round(prediction_inr_lakhs, 2), error=None)
 
    
 
@@ -103,8 +113,6 @@ def car_page():
     return render_template('car.html')
 @app.route('/predict/car/result', methods=['POST'])
 def car_result():
-    import numpy as np
-
     try:
         km_driven = int(request.form['km_driven'])
         fuel = int(request.form['fuel'])
@@ -120,7 +128,8 @@ def car_result():
     except (ValueError, KeyError) as e:
         return render_template('cresult.html', prediction=None, error='Invalid input: please enter valid numeric values.')
 
-    features = np.array([[
+    # Using pandas DataFrame to preserve feature/column names for the scikit-learn model and prevent warnings
+    features = pd.DataFrame([[
         km_driven,
         fuel,
         seller_type,
@@ -131,14 +140,16 @@ def car_result():
         max_power,
         seats,
         car_age
-    ]])
+    ]], columns=['km_driven', 'fuel', 'seller_type', 'transmission', 'owner', 'mileage', 'engine', 'max_power', 'seats', 'car_age'])
 
     try:
-        prediction = car_model.predict(features)[0]
-    except Exception:
+        # Prediction output is in raw Rupees, we convert it to Lakhs (divide by 100,000) for a cleaner UI display
+        prediction_raw = car_model.predict(features)[0]
+        prediction_lakhs = prediction_raw / 100000.0
+    except Exception as e:
         return render_template('cresult.html', prediction=None, error='Model error during prediction.')
 
-    return render_template("cresult.html", prediction=round(prediction, 2), error=None)
+    return render_template("cresult.html", prediction=round(prediction_lakhs, 2), error=None)
 
 
 @app.route('/api/contact', methods=['POST'])
